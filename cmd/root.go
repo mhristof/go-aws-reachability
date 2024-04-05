@@ -49,7 +49,6 @@ var rootCmd = &cobra.Command{
 		this := reach.NewTarget(args[0])
 		logger.Infof("Checking reachability from %s to %s", this.InstanceID, args[1])
 
-		target := args[1]
 		destParts := strings.Split(args[1], ":")
 		if len(destParts) != 2 {
 			destParts = append(destParts, "80")
@@ -61,7 +60,7 @@ var rootCmd = &cobra.Command{
 			logger.Fatalf("Error: %s", err)
 		}
 
-		reachable := this.CanReach(target, int32(portInt))
+		reachable := this.CanReach(destParts[0], int32(portInt))
 		logger.Infof("reachable: %v", reachable)
 	},
 }
