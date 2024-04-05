@@ -1,0 +1,42 @@
+# .goreleaser.yml
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: "reachability"
+    main: ./main.go  # Path to the main Go file
+    binary: reachability
+    goos:
+      - linux
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    env:
+      - CGO_ENABLED=0
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w -X cmd.version="{{.Version}}"
+
+# Disabling the default archive and packaging steps since we only want the binary
+archives:
+  - format: binary
+
+# Similarly, disable creating extra packaging like nfpm, snapcraft, etc.
+nfpms: []
+snapcrafts: []
+brews: []
+dockers: []
+
+# Changelog and snapshot configurations can be adjusted as needed
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+
+snapshot:
+  name_template: "{{ .Tag }}-next"
