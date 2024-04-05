@@ -1,0 +1,22 @@
+---
+name: CI
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: setup golang from go.mod
+      uses: actions/setup-go@v5
+      with:
+        go-version-file: 'go.mod'
+    - name: build
+      run: go build -v
+
