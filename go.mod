@@ -3,6 +3,7 @@ module github.com/mhristof/go-aws-reachability
 go 1.22.1
 
 require (
+	github.com/MakeNowJust/heredoc v1.0.0
 	github.com/aws/aws-sdk-go-v2 v1.26.1
 	github.com/aws/aws-sdk-go-v2/config v1.27.10
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.155.1

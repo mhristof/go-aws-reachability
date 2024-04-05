@@ -8,23 +8,33 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/MakeNowJust/heredoc"
 	"github.com/mhristof/go-aws-reachability/reach"
 	logger "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
+var Version = "devel"
+
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "go-aws-reachability",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+	Use:     "reachability",
+	Short:   "Create AWS Reachability insigts and runs them",
+	Version: Version,
+	Long: heredoc.Doc(`
+		Reachability is a tool to check if an instance can reach another instance
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
+		Examples:
+
+		# check if instance1 can reach instance2
+		$ reachability instance1 instance2
+
+		# Check if instance1 can reach instance2 on port 8123
+		$ reachability instance1 instance2:8123
+
+		# Check if instance1 can reach an ecs service which has a route53 entry
+		$ reachability instance1 service.ecs.local:8123
+	`),
 	Run: func(cmd *cobra.Command, args []string) {
 		verbose, _ := cmd.Flags().GetBool("verbose")
 		if verbose {
@@ -66,15 +76,5 @@ func Execute() {
 }
 
 func init() {
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.go-aws-reachability.yaml)")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	// add verbose flag
 	rootCmd.PersistentFlags().BoolP("verbose", "v", false, "verbose output")
 }
