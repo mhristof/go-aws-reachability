@@ -154,6 +154,15 @@ func (a *AWS) NetworkInsights(sourceID, destID string, destIP string, port int32
 		}
 	}
 
+	destName := destID
+	if destIP == "" {
+		// the IP is not set, so we are looking for the instance name
+		destName = a.InstanceName(destID)
+	}
+
+	name := fmt.Sprintf("%s -> %s:%d", a.InstanceName(sourceID), destName, port)
+	log.Debugf("Creating new network insights path %s", name)
+
 	input := &ec2.CreateNetworkInsightsPathInput{
 		Source:   aws.String(sourceID),
 		Protocol: ec2Types.ProtocolTcp,
@@ -163,7 +172,7 @@ func (a *AWS) NetworkInsights(sourceID, destID string, destIP string, port int32
 				Tags: []ec2Types.Tag{
 					{
 						Key:   aws.String("Name"),
-						Value: aws.String(fmt.Sprintf("%s -> %s:%d", a.InstanceName(sourceID), a.InstanceName(destID), port)),
+						Value: aws.String(name),
 					},
 				},
 			},
