@@ -35,7 +35,7 @@ func NewTarget(name string) *Target {
 func (t *Target) CanReach(name string, port int32) bool {
 	targetID, err := t.AWS.InstanceID(name)
 	if err == nil {
-		logger.Debugf("Target instance %s", targetID)
+		logger.Infof("Target instance %s", targetID)
 		ret, err := t.AWS.Reachable(t.InstanceID, name, "", port)
 		if err != nil {
 			logger.Fatalf("Error: %s", err)
@@ -48,7 +48,7 @@ func (t *Target) CanReach(name string, port int32) bool {
 	logger.Debugf("Checking if its a route53 record: %s", name)
 	route53IP, err := t.AWS.Route53IP(name, t.VPCID, t.VPCRegion)
 	if err == nil {
-		logger.Debugf("Target route53 %s", route53IP)
+		logger.Infof("Target route53 %s", route53IP)
 		ret, err := t.AWS.Reachable(t.InstanceID, name, route53IP, port)
 		if err != nil {
 			logger.Fatalf("Error: %s", err)
