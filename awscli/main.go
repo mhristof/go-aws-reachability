@@ -95,7 +95,7 @@ func (a *AWS) Route53IP(name, vpcID string, vpcRegion string) (string, error) {
 			continue
 		}
 
-		log.Infof("Checking zone %s/%s", zoneName, zoneID)
+		log.Debugf("Checking zone %s/%s", zoneName, zoneID)
 
 		records, err := a.Route53.ListResourceRecordSets(context.TODO(), &route53.ListResourceRecordSetsInput{
 			HostedZoneId: aws.String(zoneID),
@@ -104,10 +104,10 @@ func (a *AWS) Route53IP(name, vpcID string, vpcRegion string) (string, error) {
 			return "", errors.Wrap(err, "unable to list resource record sets")
 		}
 
-		log.Infof("Found %d records", len(records.ResourceRecordSets))
+		log.Debugf("Found %d records", len(records.ResourceRecordSets))
 
 		for _, record := range records.ResourceRecordSets {
-			log.Infof("Found record %s", *record.Name)
+			log.Debugf("Checking record %s", *record.Name)
 			rName := strings.TrimSuffix(*record.Name, ".")
 			if rName != name {
 				continue
@@ -117,7 +117,7 @@ func (a *AWS) Route53IP(name, vpcID string, vpcRegion string) (string, error) {
 			if err != nil {
 				panic(err)
 			}
-			log.Infof("Found record %s", string(prettyJSON))
+			log.Debugf("Found record %s", string(prettyJSON))
 			return *record.ResourceRecords[0].Value, nil
 		}
 

@@ -41,7 +41,7 @@ var rootCmd = &cobra.Command{
 			logger.SetLevel(logger.DebugLevel)
 		}
 
-		logger.Infof("Args %v", args)
+		logger.Debugf("Args %v", args)
 		if len(args) != 2 {
 			logger.Fatalf("Usage: %s <source> <dest>", os.Args[0])
 		}
